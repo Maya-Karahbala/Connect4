@@ -3,23 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jankenponclient;
+package game;
 
-import game.CirculerButton;
-import game.Message;
+
+
+import static game.Client.sInput;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static jankenponclient.Client.sInput;
-import game.Game;
-import static game.game.buttons;
-import static game.game.colum;
-import static game.game.row;
+
 import java.awt.Color;
-import javax.swing.JButton;
+
 
 /**
  *
@@ -37,48 +34,28 @@ class Listen extends Thread {
                 //mesaj gelirse bu satıra geçer
                 //mesaj tipine göre yapılacak işlemi ayır.
                 switch (received.type) {
-                    ////////////////*************************
-                    case Name:
-                        break;
                     case Bitis:
-                        game.game.enableButtons(false);
-                        game.game.finish = true;
-                        System.out.println("client bitis aldı");
+                        game.finish = true;
                         break;
                     case RivalConnected:
-
                         String name = received.content.toString();
-                        /////******************************************editted
-                        // Game.ThisGame.txt_rival_name.setText(name);
-                        game.game.enableButtons(true);
-                        game.game.lblRivalName.setText(name);
-                        game.game.frame.setTitle(name);
-
+                        game.enableButtons(true);
+                        game.lblRivalName.setText(name);
+                        game.frame.setTitle(name);
                         break;
-                    case Disconnect:
-                        break;
-                    /**
-                     * **********************
-                     */
                     case Text://change only rival colors
                         Client.color = Color.YELLOW;
                         Client.rivalColor = Color.red;
                         break;
                     case Selected:
-                        game.game.RivalSelection = (int) received.content;
+                        game.RivalSelection = (int) received.content;
                         break;
-
+                        
                 }
-
             } catch (IOException ex) {
-
-                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
-                //Client.Stop();
-                break;
+                Logger.getLogger(Listen.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ClassNotFoundException ex) {
-                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
-                //Client.Stop();
-                break;
+                Logger.getLogger(Listen.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 
@@ -113,9 +90,8 @@ public class Client {
             Client.listenMe.start();
 
             //ilk mesaj olarak isim gönderiyorum
-           // System.out.println("ilk msg gonderildi");
             Message msg = new Message(Message.Message_Type.Name);
-            msg.content = game.game.txtName.getText();
+            msg.content = game.txtName.getText();
             Client.Send(msg);
         } catch (IOException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);

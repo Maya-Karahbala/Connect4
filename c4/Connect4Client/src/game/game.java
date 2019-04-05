@@ -5,27 +5,23 @@
  */
 package game;
 
-import jankenponclient.Client;
-import java.awt.BorderLayout;
+import static game.Client.Stop;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Image;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -37,13 +33,14 @@ public class game {
     public static int row = 6, colum = 7;
     public static JButton[][] buttons = new JButton[row][colum];
     public static JFrame frame = new JFrame("Connect 4");
-    //karşı tarafın seçimi seçim -1 deyse seçilmemiş
+    //karşı tarafın seçimi  seçim -1 deyse seçilmemiş
     public static int RivalSelection, myselection;
     //benim seçimim seçim -1 deyse seçilmemiş
 
     public static JPanel panel = new JPanel(new GridLayout(row + 1, colum, 20, 20));
+    //karşı tarıf
     public static Thread control;
-    public static JLabel lblRivalName, lblResult,lblResult2;
+    public static JLabel lblRivalName, lblResult, lblResult2;
     public static JTextField txtName;
     public static ImageIcon imgThisImg = new ImageIcon("images/wait.png");
     public static boolean finish;
@@ -51,9 +48,6 @@ public class game {
     public static void main(String[] args) {
         // code for interface
 
-        RivalSelection = -1;
-        myselection = -1;
-        finish=false;
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         panel.setBackground(new Color(30, 144, 255));
@@ -71,11 +65,13 @@ public class game {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //your actions
+                
                 Client.Start("127.0.0.1", 2000);
                 btnstart.setEnabled(false);
                 txtName.setEnabled(false);
                 Thread t = new control();
                 t.start();
+                System.out.println("çıktı");
 
             }
         });
@@ -84,7 +80,7 @@ public class game {
         lblResult = new JLabel();
         lblResult.setIcon(imgThisImg);
         panel.add(lblResult);
-          lblResult2 = new JLabel();
+        lblResult2 = new JLabel();
         panel.add(lblResult2);
         //Rival labels 
         JLabel lblRvlName = new JLabel("Rival Name");
@@ -92,13 +88,12 @@ public class game {
         lblRivalName = new JLabel();
 
         panel.add(lblRivalName);
-       
 
         // adding circls to interface and buttons array
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < colum; j++) {
 
-                buttons[i][j] = new CirculerButton(i, j);
+                buttons[i][j] = new CirculerButton( j);
 
                 buttons[i][j].addActionListener(new ActionListener() {
                     // selecting circle
@@ -109,11 +104,7 @@ public class game {
                         CirculerButton pressedButton = (CirculerButton) e.getSource();
                         myselection = pressedButton.colum;
                         //disable all buttons
-                        for (int i = 0; i < row; i++) {
-                            for (int j = 0; j < colum; j++) {
-                                buttons[i][j].setEnabled(false);
-                            }
-                        }
+                        enableButtons(false);
                         //
                         // send msg to player2    
                         Message msg = new Message(Message.Message_Type.Selected);
@@ -122,32 +113,23 @@ public class game {
                         // change my interface                        
 
                         fill(pressedButton.colum, Client.color);
-                        // control for winner
-                        //horizantalControl(pressedButton.row);
-                        /*if (horizantalControl(pressedButton.row)) {
-                            System.out.println(" kazandın");
-                        }*/
-
+                       
                     }
                 });
                 buttons[i][j].setPreferredSize(new Dimension(130, 130));
-                buttons[i][j].setBackground(new Color(30, 144, 255));
-                buttons[i][j].setBackground(Color.white);
                 panel.add(buttons[i][j]);
-                buttons[i][j].setEnabled(false);
+               
             }
 
         }
-
-        ///************************************edited
+        reset(false);
         frame.setContentPane(panel);
         frame.pack();
         frame.setVisible(true);
 
     }
 
-    //image icons 
-    //image icons 
+
     // when player select a buuton circle fill the first empty circle in that colum
     public static void fill(int colum, Color color) {
 
@@ -157,18 +139,17 @@ public class game {
                 ((CirculerButton) buttons[i][colum]).color = color;
                 ((CirculerButton) buttons[i][colum]).isEmpty = false;
                 if (horizantalControl(i) || verticalControl(colum) || leftDigonalControl() || rightDigonalControl()) {
-                    System.out.println(color + "kazandın");
-                     //Message msg = ;
-                      Client.Send(new Message(Message.Message_Type.Bitis));
-                      lblResult.setText("you");
-                      lblResult.setFont(new Font("Arial", Font.PLAIN, 40));
-                      lblResult2.setText("win");
-                      lblResult2.setFont(new Font("Arial", Font.PLAIN, 40));
-                        
-                    
+                    Client.Send(new Message(Message.Message_Type.Bitis));
+                    lblResult.setText("  you");
+                    lblResult.setFont(new Font("Arial", Font.PLAIN, 40));
+                    lblResult2.setText("win");
+                    lblResult2.setFont(new Font("Arial", Font.PLAIN, 40));
+
+                    terminate();
+
                 }
                 break;
-                
+
             }
         }
     }
@@ -188,13 +169,15 @@ public class game {
                         enableButtons(true);
                         RivalSelection = -1;
                     }
-                    if(finish){
-                      enableButtons(false); 
-                      lblResult.setText("you");
-                      lblResult.setFont(new Font("Arial", Font.PLAIN, 40));
-                      lblResult2.setText("lose");
-                      lblResult2.setFont(new Font("Arial", Font.PLAIN, 40));
-                        
+                    if (finish) {
+                        enableButtons(false);
+                        lblResult.setText("   you");
+                        lblResult.setFont(new Font("Arial", Font.PLAIN, 40));
+                        lblResult2.setText("lose");
+                        lblResult2.setFont(new Font("Arial", Font.PLAIN, 40));
+
+                        terminate();
+
                     }
 
                 } catch (InterruptedException ex) {
@@ -268,6 +251,33 @@ public class game {
             for (int j = 0; j < colum; j++) {
                 buttons[i][j].setEnabled(b);
             }
+        }
+    }
+
+    public static void reset(boolean b) {
+        RivalSelection = -1;
+        myselection = -1;
+        finish = false;
+        lblResult.setText("");
+
+        lblResult2.setText("");
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < colum; j++) {
+                ((CirculerButton) buttons[i][j]).color = null;
+                ((CirculerButton) buttons[i][j]).isEmpty = true;
+                buttons[i][j].setBackground(Color.white);
+                buttons[i][j].setEnabled(b);
+            }
+        }
+    }
+
+    public static void terminate() {
+        int reply = JOptionPane.showConfirmDialog(null, "Do you want to play again", "Close?", JOptionPane.YES_NO_OPTION);
+        if (reply == JOptionPane.NO_OPTION) {
+            Stop();
+            System.exit(0);
+        } else {
+            reset(true);
         }
     }
 }
