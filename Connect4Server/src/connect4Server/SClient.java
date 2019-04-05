@@ -3,10 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jankenponserver;
+package connect4Server;
 
-import game.Message;
-import static game.Message.Message_Type.Selected;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -14,6 +13,7 @@ import static java.lang.Thread.sleep;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 
 /**
  *
@@ -79,6 +79,7 @@ public class SClient {
                 try {
                     //mesajı bekleyen kod satırı
                     Message received = (Message) (TheClient.sInput.readObject());
+                  
                     //mesaj gelirse bu satıra geçer
                     //mesaj tipine göre işlemlere ayır
                     switch (received.type) {

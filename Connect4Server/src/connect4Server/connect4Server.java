@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jankenponserver;
+package connect4Server;
 
 
 /**
  *
  * @author INSECT
  */
-public class JanKenPonServer {
+public class connect4Server {
 
     /**
      * @param args the command line arguments
