@@ -6,6 +6,7 @@
 package game;
 
 import static game.Client.Stop;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -18,9 +19,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -30,77 +32,111 @@ import javax.swing.JOptionPane;
 public class game {
 
     // setting number of rpw and colıms in the game
-    public static int row = 6, colum = 7;
+    public static int row = 5, colum = 3, selectionNo;
     public static JButton[][] buttons = new JButton[row][colum];
     public static JFrame frame = new JFrame("Connect 4");
-    //karşı tarafın seçimi  seçim -1 deyse seçilmemiş
+    //rakibin  seçimi  seçim -1 deyse seçilmemiş
     public static int RivalSelection, myselection;
     //benim seçimim seçim -1 deyse seçilmemiş
 
-    public static JPanel panel = new JPanel(new GridLayout(row + 1, colum, 20, 20));
+    public static JPanel panel = new JPanel(new GridLayout(row, colum, 20, 20));
     //karşı tarıf
     public static Thread control;
-    public static JLabel lblRivalName, lblResult, lblResult2;
-    public static JTextField txtName;
-    public static ImageIcon imgThisImg = new ImageIcon("images/wait.png");
-    public static boolean finish;
+
+    public static JTextField txtName, txtResult, txtRivalName;
+
+    public static boolean colse;
+    public static JButton btnstart;
+    public static Font font = new Font("Arial", Font.PLAIN, 25);
+    public static Color backColor = new Color(0, 0, 153);
 
     public static void main(String[] args) {
         // code for interface
+        //main panel
+
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        //
 
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        panel.setBackground(new Color(30, 144, 255));
-        // adding header
+        // adding header spaces
+        JPanel header0 = new JPanel(new GridLayout(1, 3, 50, 50));
+        header0.add(new JLabel(" "));
+        JPanel header00 = new JPanel(new GridLayout(1, 3, 50, 50));
+        header00.add(new JLabel(" "));
+        ///////////////
+        JPanel header = new JPanel(new GridLayout(1, 3, 50, 50));
+
         //name 
-        JLabel lblName = new JLabel("Name");
-        panel.add(lblName);
+        JLabel lblName = new JLabel(" Name");
+        lblName.setForeground(Color.white);
+        lblName.setFont(font);
+
+        header.add(lblName);
         txtName = new JTextField("  player1");
-        panel.add(txtName);
+        txtName.setFont(font);
+        header.add(txtName);
         //connect 
-        JButton btnstart = new JButton("Start");
-        panel.add(btnstart);
+        btnstart = new JButton("Start");
+        btnstart.setPreferredSize(new Dimension(40, 60));
+        btnstart.setFont(font);
+        btnstart.setBackground(new Color(
+                255, 255, 153));
+        btnstart.setBorder(BorderFactory.createLineBorder(Color.white, 7));
+        header.add(btnstart);
+
         btnstart.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 //your actions
-                
+
                 Client.Start("127.0.0.1", 2000);
                 btnstart.setEnabled(false);
                 txtName.setEnabled(false);
                 Thread t = new control();
                 t.start();
-                System.out.println("çıktı");
 
             }
         });
+// adding header2
+        JPanel header2 = new JPanel(new GridLayout(1, 3, 20, 20));
 
-        //label
-        lblResult = new JLabel();
-        lblResult.setIcon(imgThisImg);
-        panel.add(lblResult);
-        lblResult2 = new JLabel();
-        panel.add(lblResult2);
         //Rival labels 
-        JLabel lblRvlName = new JLabel("Rival Name");
-        panel.add(lblRvlName);
-        lblRivalName = new JLabel();
+        JLabel rname = new JLabel(" Rival Name");
+        rname.setForeground(Color.white);
+        rname.setFont(font);
+        header2.add(rname);
 
-        panel.add(lblRivalName);
+        txtRivalName = new JTextField();
+        txtRivalName.setFont(font);
+        //  txtRivalName.setEditable(false);
+
+        header2.add(txtRivalName);
+        //label
+        txtResult = new JTextField();
+
+        txtResult.setPreferredSize(new Dimension(40, 60));
+        txtResult.setFont(new Font("Arial", Font.PLAIN, 40));
+        txtResult.setEditable(false);
+        txtResult.setBackground((new Color(0, 0, 153)));
+        header2.add(txtResult);
 
         // adding circls to interface and buttons array
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < colum; j++) {
 
-                buttons[i][j] = new CirculerButton( j);
+                buttons[i][j] = new CirculerButton(j);
 
                 buttons[i][j].addActionListener(new ActionListener() {
                     // selecting circle
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        //my actions
+                        //my actions,
+                        selectionNo++;
                         // get selected button
+
                         CirculerButton pressedButton = (CirculerButton) e.getSource();
                         myselection = pressedButton.colum;
                         //disable all buttons
@@ -113,37 +149,48 @@ public class game {
                         // change my interface                        
 
                         fill(pressedButton.colum, Client.color);
-                       
+
                     }
                 });
                 buttons[i][j].setPreferredSize(new Dimension(130, 130));
                 panel.add(buttons[i][j]);
-               
+
             }
 
         }
         reset(false);
-        frame.setContentPane(panel);
+        // set panels background color
+        header.setBackground(backColor);
+        header2.setBackground(backColor);
+        header0.setBackground(backColor);
+        header00.setBackground(backColor);
+        panel.setBackground(backColor);
+
+        ///////////
+        mainPanel.add(header);
+        mainPanel.add(header0);
+        mainPanel.add(header2);
+        mainPanel.add(header00);
+        mainPanel.add(panel);
+
+        frame.setContentPane(mainPanel);
         frame.pack();
         frame.setVisible(true);
 
     }
 
-
     // when player select a buuton circle fill the first empty circle in that colum
     public static void fill(int colum, Color color) {
 
         for (int i = row - 1; i >= 0; i--) {
+
             if (((CirculerButton) buttons[i][colum]).isEmpty) {
                 buttons[i][colum].setBackground(color);
                 ((CirculerButton) buttons[i][colum]).color = color;
                 ((CirculerButton) buttons[i][colum]).isEmpty = false;
                 if (horizantalControl(i) || verticalControl(colum) || leftDigonalControl() || rightDigonalControl()) {
                     Client.Send(new Message(Message.Message_Type.Bitis));
-                    lblResult.setText("  you");
-                    lblResult.setFont(new Font("Arial", Font.PLAIN, 40));
-                    lblResult2.setText("win");
-                    lblResult2.setFont(new Font("Arial", Font.PLAIN, 40));
+                    txtResult.setText("     you win");
 
                     terminate();
 
@@ -153,7 +200,7 @@ public class game {
             }
         }
     }
-// listen to rival selections 
+// rakibin hamleleri bekliyor
 
     public static class control extends Thread {
 
@@ -163,22 +210,21 @@ public class game {
 
                 try {
                     Thread.sleep(250);
+                    if (selectionNo > (row * colum) / 2) {
+                        txtResult.setText("     Draw");
+                        Client.Send(new Message(Message.Message_Type.Disconnect));
 
+                        terminate();
+                    }
                     if (RivalSelection != -1) {
                         fill(RivalSelection, Client.rivalColor);
                         enableButtons(true);
                         RivalSelection = -1;
                     }
-                    if (finish) {
-                        enableButtons(false);
-                        lblResult.setText("   you");
-                        lblResult.setFont(new Font("Arial", Font.PLAIN, 40));
-                        lblResult2.setText("lose");
-                        lblResult2.setFont(new Font("Arial", Font.PLAIN, 40));
-
+                    if (colse) {
                         terminate();
-
                     }
+                    // tahata dolmuşsa 
 
                 } catch (InterruptedException ex) {
                     Logger.getLogger(game.class.getName()).log(Level.SEVERE, null, ex);
@@ -188,7 +234,7 @@ public class game {
         }
 
     }
-    ///////////////control fonksyonları
+    ///////////////kontrol fonksyonları
 
     public static boolean horizantalControl(int row) {
         for (int i = 0; i < colum - 3; i++) {
@@ -257,10 +303,11 @@ public class game {
     public static void reset(boolean b) {
         RivalSelection = -1;
         myselection = -1;
-        finish = false;
-        lblResult.setText("");
+        colse = false;
+        selectionNo = 0;
 
-        lblResult2.setText("");
+        txtResult.setText("");
+
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < colum; j++) {
                 ((CirculerButton) buttons[i][j]).color = null;
@@ -272,12 +319,20 @@ public class game {
     }
 
     public static void terminate() {
+        enableButtons(false);
         int reply = JOptionPane.showConfirmDialog(null, "Do you want to play again", "Close?", JOptionPane.YES_NO_OPTION);
+
         if (reply == JOptionPane.NO_OPTION) {
-            Stop();
-            System.exit(0);
+            closeFrame();
         } else {
             reset(true);
+
         }
+    }
+
+    public static void closeFrame() {
+        Stop();
+
+        System.exit(0);
     }
 }

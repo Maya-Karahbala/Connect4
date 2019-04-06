@@ -16,13 +16,14 @@ import javax.swing.JButton;
  */
 public class CirculerButton extends JButton {
 
-    public int colum;
+    public int colum,row;
     public boolean isEmpty;
     public Color color;
 
     public CirculerButton(int colum) {
 
         this.colum = colum;
+        
 
         isEmpty = true;
         Dimension size = getPreferredSize();

@@ -5,9 +5,11 @@
  */
 package game;
 
-
-
 import static game.Client.sInput;
+import static game.game.closeFrame;
+import static game.game.enableButtons;
+
+import static game.game.terminate;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -16,7 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import java.awt.Color;
-
+import java.awt.Font;
 
 /**
  *
@@ -27,30 +29,44 @@ class Listen extends Thread {
 
     public void run() {
         //soket bağlı olduğu sürece dön
+        Message received;
         while (Client.socket.isConnected()) {
             try {
                 //mesaj gelmesini bloking olarak dinyelen komut
-                Message received = (Message) (sInput.readObject());
+                received = (Message) (sInput.readObject());
                 //mesaj gelirse bu satıra geçer
                 //mesaj tipine göre yapılacak işlemi ayır.
                 switch (received.type) {
+                    //draw
+                    case Disconnect:
+                        System.out.println("draw geldi");
+                        game.txtResult.setText("     Draw");
+                        game.colse = true;
+                        break;
                     case Bitis:
-                        game.finish = true;
+                        enableButtons(false);
+                        game.txtResult.setText("     you lose");
+
+                        game.colse = true;
+
                         break;
                     case RivalConnected:
+                        game.txtResult.setBackground(Color.RED);
                         String name = received.content.toString();
                         game.enableButtons(true);
-                        game.lblRivalName.setText(name);
+                        game.txtRivalName.setText(name);
                         game.frame.setTitle(name);
                         break;
                     case Text://change only rival colors
                         Client.color = Color.YELLOW;
                         Client.rivalColor = Color.red;
+                        game.txtResult.setBackground(Color.YELLOW);
                         break;
                     case Selected:
+
                         game.RivalSelection = (int) received.content;
                         break;
-                        
+
                 }
             } catch (IOException ex) {
                 Logger.getLogger(Listen.class.getName()).log(Level.SEVERE, null, ex);
