@@ -7,7 +7,6 @@ package connect4Server;
 
 import game.Message;
 import static game.Message.Message_Type.Name;
-import static game.Message.Message_Type.Selected;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -65,7 +64,6 @@ public class SClient {
                 try {
                     //mesajı bekleyen kod satırı
                     Message received = (Message) (TheClient.sInput.readObject());
-
                     //mesaj gelirse bu satıra geçer
                     //mesaj tipine göre işlemlere ayır
                     if (received.type == Name) {

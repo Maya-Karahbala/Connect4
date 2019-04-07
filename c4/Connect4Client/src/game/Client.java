@@ -6,20 +6,14 @@
 package game;
 
 import static game.Client.sInput;
-import static game.game.closeFrame;
-import static game.game.enableButtons;
-
-import static game.game.terminate;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import java.awt.Color;
-import java.awt.Font;
-import static game.game.disconnected;
+
 
 /**
  *
@@ -40,7 +34,6 @@ class Listen extends Thread {
                 switch (received.type) {
                     //draw
                     case Draw:
-
                         game.txtResult.setText("     Draw");
                         game.disconnected = true;
                     case Disconnected:
@@ -48,11 +41,11 @@ class Listen extends Thread {
                         break;
                     case Bitis:
                         game.lose = true;
-                        //enableButtons(false);
-
                         break;
                     case RivalConnected:
+                        // set player color
                         game.txtResult.setBackground(Color.RED);
+                        // get rival name and write it to txtRivalName
                         String name = received.content.toString();
                         game.enableButtons(true);
                         game.txtRivalName.setText(name);
@@ -64,7 +57,6 @@ class Listen extends Thread {
                         game.txtResult.setBackground(Color.YELLOW);
                         break;
                     case Selected:
-
                         game.RivalSelection = (int) received.content;
                         break;
                     case playAgain:

@@ -14,6 +14,7 @@ import javax.swing.JButton;
  *
  * @author maya
  */
+// let buttons displayed as circle
 public class CirculerButton extends JButton {
 
     public int colum,row;
@@ -23,8 +24,6 @@ public class CirculerButton extends JButton {
     public CirculerButton(int colum) {
 
         this.colum = colum;
-        
-
         isEmpty = true;
         Dimension size = getPreferredSize();
         size.width = size.height = Math.max(size.width, size.height);
