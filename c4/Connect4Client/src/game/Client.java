@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 
 import java.awt.Color;
 import java.awt.Font;
+import static game.game.disconnected;
 
 /**
  *
@@ -38,16 +39,16 @@ class Listen extends Thread {
                 //mesaj tipine göre yapılacak işlemi ayır.
                 switch (received.type) {
                     //draw
-                    case Disconnect:
-                        System.out.println("draw geldi");
+                    case Draw:
+
                         game.txtResult.setText("     Draw");
-                        game.colse = true;
+                        game.disconnected = true;
+                    case Disconnected:
+                        game.disconnected = true;
                         break;
                     case Bitis:
-                        enableButtons(false);
-                        game.txtResult.setText("     you lose");
-
-                        game.colse = true;
+                        game.lose = true;
+                        //enableButtons(false);
 
                         break;
                     case RivalConnected:
@@ -57,7 +58,7 @@ class Listen extends Thread {
                         game.txtRivalName.setText(name);
                         game.frame.setTitle(name);
                         break;
-                    case Text://change only rival colors
+                    case ChangeColor://change only rival colors
                         Client.color = Color.YELLOW;
                         Client.rivalColor = Color.red;
                         game.txtResult.setBackground(Color.YELLOW);
@@ -65,6 +66,9 @@ class Listen extends Thread {
                     case Selected:
 
                         game.RivalSelection = (int) received.content;
+                        break;
+                    case playAgain:
+                        game.enableButtons(true);
                         break;
 
                 }

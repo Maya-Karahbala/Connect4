@@ -6,7 +6,6 @@
 package connect4Server;
 
 import game.Message;
-import static game.Message.Message_Type.Disconnect;
 import static game.Message.Message_Type.Name;
 import static game.Message.Message_Type.Selected;
 import java.io.IOException;
@@ -140,7 +139,7 @@ class PairingThread extends Thread {
                     Server.Send(TheClient.rival, msg1);
 
                     //change default color from red to yeloow
-                    Message msg12 = new Message(Message.Message_Type.Text);
+                    Message msg12 = new Message(Message.Message_Type.ChangeColor);
                     Server.Send(TheClient.rival, msg12);
 
                     Message msg2 = new Message(Message.Message_Type.RivalConnected);

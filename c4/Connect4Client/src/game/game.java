@@ -31,21 +31,20 @@ import javax.swing.JOptionPane;
  */
 public class game {
 
-    // setting number of rpw and colıms in the game
-    public static int row = 5, colum = 3, selectionNo;
+    // setting number of row and colums in the game
+    public static int row = 6, colum = 6, selectionNo;
+    //arry of circular buttons
     public static JButton[][] buttons = new JButton[row][colum];
-    public static JFrame frame = new JFrame("Connect 4");
-    //rakibin  seçimi  seçim -1 deyse seçilmemiş
+    public static JFrame frame = new JFrame("Connect 4");    
     public static int RivalSelection, myselection;
-    //benim seçimim seçim -1 deyse seçilmemiş
 
     public static JPanel panel = new JPanel(new GridLayout(row, colum, 20, 20));
-    //karşı tarıf
+    //thread for messages recived from rival
     public static Thread control;
-
     public static JTextField txtName, txtResult, txtRivalName;
-
-    public static boolean colse;
+    //disconnected :rival connecting statues,if rival disconnected then disconnected=true
+    //lose=true if rival sent messages that he wins
+    public static boolean disconnected,lose;
     public static JButton btnstart;
     public static Font font = new Font("Arial", Font.PLAIN, 25);
     public static Color backColor = new Color(0, 0, 153);
@@ -69,7 +68,7 @@ public class game {
         JPanel header = new JPanel(new GridLayout(1, 3, 50, 50));
 
         //name 
-        JLabel lblName = new JLabel(" Name");
+        JLabel lblName = new JLabel("   Name");
         lblName.setForeground(Color.white);
         lblName.setFont(font);
 
@@ -81,9 +80,9 @@ public class game {
         btnstart = new JButton("Start");
         btnstart.setPreferredSize(new Dimension(40, 60));
         btnstart.setFont(font);
-        btnstart.setBackground(new Color(
-                255, 255, 153));
-        btnstart.setBorder(BorderFactory.createLineBorder(Color.white, 7));
+        // btnstart.setBackground(new Color(
+        //     255, 255, 153));
+        // btnstart.setBorder(BorderFactory.createLineBorder(Color.white, 7));
         header.add(btnstart);
 
         btnstart.addActionListener(new ActionListener() {
@@ -104,12 +103,13 @@ public class game {
         JPanel header2 = new JPanel(new GridLayout(1, 3, 20, 20));
 
         //Rival labels 
-        JLabel rname = new JLabel(" Rival Name");
+        JLabel rname = new JLabel("   Rival Name");
         rname.setForeground(Color.white);
         rname.setFont(font);
         header2.add(rname);
 
         txtRivalName = new JTextField();
+        txtRivalName.setEditable(false);
         txtRivalName.setFont(font);
         //  txtRivalName.setEditable(false);
 
@@ -136,7 +136,7 @@ public class game {
                         //my actions,
                         selectionNo++;
                         // get selected button
-
+                        txtResult.setText("wait ...");
                         CirculerButton pressedButton = (CirculerButton) e.getSource();
                         myselection = pressedButton.colum;
                         //disable all buttons
@@ -210,19 +210,33 @@ public class game {
 
                 try {
                     Thread.sleep(250);
-                    if (selectionNo > (row * colum) / 2) {
-                        txtResult.setText("     Draw");
-                        Client.Send(new Message(Message.Message_Type.Disconnect));
+                    if(lose){
+                        game.txtResult.setText("     you lose");
 
+                        game.terminate();
+                        lose=false;
+                    }
+                    else if (selectionNo >= (row * colum) / 2) {
+                        txtResult.setText("     Draw");
+                        Client.Send(new Message(Message.Message_Type.Draw));
+                        selectionNo=0;
                         terminate();
                     }
-                    if (RivalSelection != -1) {
+                    else if (RivalSelection != -1) {
                         fill(RivalSelection, Client.rivalColor);
                         enableButtons(true);
                         RivalSelection = -1;
+                        txtResult.setText("it's your turn");
                     }
-                    if (colse) {
-                        terminate();
+                    else if (disconnected) {//rakip ayrılmışsa
+                        txtResult.setBackground((new Color(0, 0, 153)));
+                        txtResult.setText("");
+                        btnstart.setEnabled(true);
+                        enableButtons(false);
+                        disconnected=false;
+                        // closeFrame();
+                       
+                       // btnstart.setEnabled(true);
                     }
                     // tahata dolmuşsa 
 
@@ -303,10 +317,13 @@ public class game {
     public static void reset(boolean b) {
         RivalSelection = -1;
         myselection = -1;
-        colse = false;
+        disconnected = false;
         selectionNo = 0;
-
+        lose=false;
         txtResult.setText("");
+        
+
+        txtRivalName.setText("");
 
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < colum; j++) {
@@ -320,19 +337,27 @@ public class game {
 
     public static void terminate() {
         enableButtons(false);
+        
         int reply = JOptionPane.showConfirmDialog(null, "Do you want to play again", "Close?", JOptionPane.YES_NO_OPTION);
 
         if (reply == JOptionPane.NO_OPTION) {
-            closeFrame();
+            Client.Send(new Message(Message.Message_Type.Disconnected));
+            Stop();
+           System.exit(0);
         } else {
-            reset(true);
+            Client.Send(new Message(Message.Message_Type.playAgain));
+            if(disconnected){
+                btnstart.setEnabled(true);
+                
+            }
+            reset(false);
+            
 
         }
     }
 
     public static void closeFrame() {
         Stop();
-
         System.exit(0);
     }
 }
