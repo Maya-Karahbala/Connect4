@@ -1,9 +1,6 @@
 
-<!DOCTYPE html>
-<html>
-<head>
-</head>
-<body>
+
+
 	<h1> Connect4 </h1>
 	<p> Client-Server Game</p>
 	<ol>
@@ -43,5 +40,3 @@
 		</ul>
  </ol>
 
-</body>
-</html>
