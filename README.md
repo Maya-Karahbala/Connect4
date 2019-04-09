@@ -5,7 +5,6 @@
 </head>
 <body>
 	<h1> Connect4 </h1>
-        <img src="screenshoot.png" style="width:48px;height:48px;">
 	<p> Client-Server Game</p>
 	<ol>
 		<h2><li > Summary</li></h2>
@@ -39,6 +38,7 @@
 			<li> game terminates if one player win or if all holes filled and players draw</li>	
 		</ul>
     </ol>
+<img src="screenshoot.png" style="width:48px;height:48px;">
 </body>
 </html>
 
