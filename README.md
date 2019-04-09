@@ -17,10 +17,10 @@
 			<li>  Adding  colum, isEmpty and color properties to buttons for control  purposes.</li>
 			<li>  When the  player  press start  button he connects to the server and  the server will create a Sclient that will serve only  that player and then server will  back to wait for other players reqests.</li>
 			<li> Sclient will start  PairingThread to match the player with another player</li>
-			<li> when two players are matched, the game will start and different colors will be assigned to the players </li>
-
-		
-				There are two basic and continuous functions in the game
+			<li> when two players are matched, the game will start and different colors will be assigned to the 
+				players </li>
+		                <li> 
+				There are two basic and continuous functions in the game</li> 
 				<ol>
 				<li> controling player  own moves(controled by Circular buttons ActionListener)
 				</li>
@@ -33,13 +33,9 @@
 				</li>
 				<li>  horizantal, vertical and digonal  control methods will be called</li>
 				<li> transiction information will sent to the rival as a message.</li>
-
 				</ol>
-			
-			
 			<li> when player send message to rival the message will go firstly to the sclient then to the rival</li>
-			<li> game terminates if one player win or if all holes filled and players draw</li>
-			
+			<li> game terminates if one player win or if all holes filled and players draw</li>	
 		</ul>
     </ol>
 </body>
