@@ -5,6 +5,7 @@
 </head>
 <body>
 	<h1> Connect4 </h1>
+	<img src="screenshoot.png">
 	<p> Client-Server Game</p>
 	<ol>
 		<h2><li > Summary</li></h2>
