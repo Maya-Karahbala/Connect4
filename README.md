@@ -5,7 +5,7 @@
 </head>
 <body>
 	<h1> Connect4 </h1>
-	<img src="screenshoot.png" style="width:48px;height:48px;">
+        ![](screenshoot.png | width=100)
 	<p> Client-Server Game</p>
 	<ol>
 		<h2><li > Summary</li></h2>
