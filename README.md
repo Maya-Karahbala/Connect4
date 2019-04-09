@@ -41,6 +41,7 @@
 			<li> game terminates if one player win or if all holes filled and players draw</li>
 			
 		</ul>
-		
+		 </ol>
 
-
+</body>
+</html>
