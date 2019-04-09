@@ -1,4 +1,4 @@
-![](screenshoot.png | width=100)
+
 <!DOCTYPE html>
 <html>
 <head>
