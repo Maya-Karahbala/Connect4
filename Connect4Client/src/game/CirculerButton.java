@@ -17,7 +17,7 @@ import javax.swing.JButton;
 // let buttons displayed as circle
 public class CirculerButton extends JButton {
 
-    public int colum,row;
+    public int colum;
     public boolean isEmpty;
     public Color color;
 
