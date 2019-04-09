@@ -39,6 +39,7 @@
 		</ul>
     </ol>
 </body>
-	<img src="screenshoot.png" style="width:48px;height:48px;">
+	
 </html>
+<img src="screenshoot.png" style="width:48px;height:48px;">
 
