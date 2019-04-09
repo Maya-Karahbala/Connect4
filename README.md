@@ -38,7 +38,7 @@
 			<li> game terminates if one player win or if all holes filled and players draw</li>	
 		</ul>
     </ol>
-<img src="screenshoot.png" style="width:48px;height:48px;">
 </body>
+	<img src="screenshoot.png" style="width:48px;height:48px;">
 </html>
 
