@@ -7,6 +7,7 @@
 	<h1> Connect4 </h1>
 	<p> Client-Server Game</p>
 	<img align="center" width="400" height="400" src="screenshoot.png"><br>
+	<p>for testing this game you have to run the server class first then run game class for each player</p>
 	<ol>
 		<h2><li > Summary</li></h2>
 		<p>
