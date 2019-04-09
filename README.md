@@ -19,7 +19,7 @@
 			<li> Sclient will start  PairingThread to match the player with another player</li>
 			<li> when two players are matched, the game will start and different colors will be assigned to the players </li>
 
-		
+		<li>
 				There are two basic and continuous functions in the game</li>
 				<ol>
 				<li> controling player  own moves(controled by Circular buttons ActionListener)
