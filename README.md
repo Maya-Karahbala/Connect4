@@ -1,11 +1,11 @@
-
+![](screenshoot.png | width=100)
 <!DOCTYPE html>
 <html>
 <head>
 </head>
 <body>
 	<h1> Connect4 </h1>
-        ![](screenshoot.png | width=100)
+        <img src="screenshoot.png" style="width:48px;height:48px;">
 	<p> Client-Server Game</p>
 	<ol>
 		<h2><li > Summary</li></h2>
