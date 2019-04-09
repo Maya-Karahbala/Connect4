@@ -1,6 +1,9 @@
 
-
-
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
 	<h1> Connect4 </h1>
 	<p> Client-Server Game</p>
 	<ol>
@@ -16,7 +19,7 @@
 			<li> Sclient will start  PairingThread to match the player with another player</li>
 			<li> when two players are matched, the game will start and different colors will be assigned to the players </li>
 
-			<li> 
+		
 				There are two basic and continuous functions in the game</li>
 				<ol>
 				<li> controling player  own moves(controled by Circular buttons ActionListener)
@@ -38,5 +41,7 @@
 			<li> game terminates if one player win or if all holes filled and players draw</li>
 			
 		</ul>
- </ol>
+    </ol>
+</body>
+</html>
 
