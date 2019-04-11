@@ -8,11 +8,11 @@
 	<ol>
 		<h2><li > Summary</li></h2>
 		<p>
-			Connect Four  is a two-player connection game in which  players have tow differnt color and then take turns dropping one colored disc from the top into a seven-column, six-row(Dynamic) vertically suspended grid. The pieces fall straight down, occupying the lowest available space within the column. The objective of the game is to be the first to form a horizontal, vertical, or diagonal line of four of one's own discs.
+			Connect Four  is a two-player connection game in which  players have tow differnt color and then take turns dropping one colored disc from the top into a six-column, six-row(Dynamic) vertically suspended grid. The pieces fall straight down, occupying the lowest available space within the column. The objective of the game is to be the first to form a horizontal, vertical, or diagonal line of four of one's own discs.
 		</p>
 		<h2><li > Project steps </li></h2>
 		<ul> 
-			<li> creating (6 * 7) Two-dimensional matrix  from buttons derived from CirculerButton </li>
+			<li> creating (6 * 6) Two-dimensional matrix  from buttons derived from CirculerButton </li>
 			<li>  Adding  colum, isEmpty and color properties to buttons for control  purposes.</li>
 			<li>  When the  player  press start  button he connects to the server and  the server will create a Sclient that will serve only  that player and then server will  back to wait for other players reqests.</li>
 			<li> Sclient will start  PairingThread to match the player with another player</li>
