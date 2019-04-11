@@ -4,7 +4,7 @@
 <body>
 	<h1> Connect4 (Client-Server Game) </h1>
 	<img align="center" width="400" height="400" src="screenshoot.png"><br>
-	<p>for testing this game you have to run the server class in Connect4Server package first.  then run game class for each player in Connect4Client </p>
+	<p>for testing this game you have to run the server class in Connect4Server package first.  then run game class  in Connect4Client package for each player  </p>
 	<ol>
 		<h2><li > Summary</li></h2>
 		<p>
@@ -14,7 +14,7 @@
 		<ul> 
 			<li> creating (6 * 6) Two-dimensional matrix  from buttons derived from CirculerButton </li>
 			<li>  Adding  colum, isEmpty and color properties to buttons for control  purposes.</li>
-			<li>  When the  player  press start  button he connects to the server and  the server will create a Sclient that will serve only  that player and then server will  back to wait for other players reqests.</li>
+			<li>  When the  player  press start  button he connects to the server and  the server will create a Sclient that will serve only  that player and then server will go back to wait for other players requests.</li>
 			<li> Sclient will start  PairingThread to match the player with another player</li>
 			<li> when two players are matched, the game will start and different colors will be assigned to the 
 				players </li>
