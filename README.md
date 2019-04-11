@@ -4,7 +4,7 @@
 <body>
 	<h1> Connect4 (Client-Server Game) </h1>
 	<img align="center" width="400" height="400" src="screenshoot.png"><br>
-	<p>for testing this game you have to run the server class first then run game class for each player</p>
+	<p>for testing this game you have to run the server class in Connect4Server package first.  then run game class for each player in Connect4Client </p>
 	<ol>
 		<h2><li > Summary</li></h2>
 		<p>
